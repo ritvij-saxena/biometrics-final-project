@@ -9,7 +9,6 @@ import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 
-
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -39,6 +38,8 @@ class MyHomePageState extends State<MyHomePage> {
   bool _canCheckBiometrics;
   String _authorized = "Not Authorized";
   List<BiometricType> _availableBiometrics;
+  bool dialogAuth = false;
+  String id = "1234";
 
   Future<void> checkBiometrics() async {
     bool canCheckBiometrics;
@@ -80,7 +81,7 @@ class MyHomePageState extends State<MyHomePage> {
     bool authenticated;
     try {
       authenticated = await authentication.authenticateWithBiometrics(
-          localizedReason: "Mandatory step for required task",
+          localizedReason: "Step 2 for required task",
           useErrorDialogs: true,
           stickyAuth: true);
     } on PlatformException catch (e) {
@@ -123,12 +124,16 @@ class MyHomePageState extends State<MyHomePage> {
                     msg: "Recognition Procedure",
                     toastLength: Toast.LENGTH_SHORT,
                   );
-                  await performFingerprintAuthentication();
-                  if (_authorized == "Authorized") {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => FaceRecognitionPage()));
+                  dialogAuth = await authDialog(context, id);
+                  print('dialogauth ' + dialogAuth.toString());
+                  if (dialogAuth) {
+                    await performFingerprintAuthentication();
+                    if (_authorized == "Authorized") {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => FaceRecognitionPage()));
+                    }
                   }
                 })
           ],
@@ -138,7 +143,35 @@ class MyHomePageState extends State<MyHomePage> {
   }
 }
 
-
+Future<bool> authDialog(BuildContext context, String id)  {
+  TextEditingController controller = TextEditingController();
+  bool result = false;
+  return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Identify Yourself (Step 1)'),
+          content: TextField(
+            controller: controller,
+            decoration: InputDecoration(
+                labelText: 'Identification Number', hintText: "Enter Your ID"),
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              color: Colors.green,
+              child: Text('Submit'),
+              onPressed: () {
+                  if(controller.text == id){
+                    result = true;
+                  }
+                  Navigator.of(context).pop(result);
+              },
+            )
+          ],
+        );
+      });
+}
 
 //---------------------------------------------------------------------------------------------------------------------------------
 // Camera Widget
@@ -250,7 +283,8 @@ class CameraState extends State<CameraWidget> {
                               try {
                                 await _initializeControllerFuture;
                                 final path = join(
-                                  (await getApplicationDocumentsDirectory()).path,
+                                  (await getApplicationDocumentsDirectory())
+                                      .path,
                                   '${DateTime.now().toString().replaceAll(new RegExp(r"\s+\b|\b\s"), "")}.png',
                                 );
                                 currentPhotoPath = path;
@@ -323,8 +357,8 @@ class FaceRecognitionPage extends StatelessWidget {
     return Scaffold(
         body: Center(
             child: Container(
-              child: Text('Face Recognition'),
-            )));
+      child: Text('Face Recognition'),
+    )));
   }
 }
 
@@ -346,16 +380,15 @@ class DisplayPictureScreen extends StatelessWidget {
               child: imagePath != null
                   ? Image.file(File(imagePath))
                   : Container(
-                child: Text(
-                    'Image Path not Avaiable, Image not taken or see gallery manually'),
-              ))),
+                      child: Text(
+                          'Image Path not Avaiable, Image not taken or see gallery manually'),
+                    ))),
     );
   }
 }
 
 //---------------------------------------------------------------------------------------------------------------------------------
 // Images For Training Widget
-
 
 class ImagesForTraining extends StatefulWidget {
   final List imageList;
@@ -372,8 +405,10 @@ class ImagesForTraining extends StatefulWidget {
 class ImagesForTrainingState extends State<ImagesForTraining> {
   List paths = List();
   final key = GlobalKey<FormState>();
+
   //List tempList = List();
   String dataset_name;
+
   loadImagePaths(Asset x) async {
     return x.filePath;
   }
@@ -383,16 +418,20 @@ class ImagesForTrainingState extends State<ImagesForTraining> {
     // TODO: implement build
     print(widget.imageList.length);
     return Scaffold(
-        appBar: AppBar(actions: <Widget>[
-          IconButton(icon: Icon(Icons.file_upload),
-            onPressed: (){
-              Fluttertoast.showToast(
-                msg: "Uploading to cloud for train the model",
-                toastLength: Toast.LENGTH_SHORT,
-              );
-              submit();
-            },)
-        ],),
+        appBar: AppBar(
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.file_upload),
+              onPressed: () {
+                Fluttertoast.showToast(
+                  msg: "Uploading to cloud for train the model",
+                  toastLength: Toast.LENGTH_SHORT,
+                );
+                submit();
+              },
+            )
+          ],
+        ),
         body: SingleChildScrollView(
           child: Column(
             //alignment: AlignmentDirectional.bottomCenter,
@@ -401,20 +440,20 @@ class ImagesForTrainingState extends State<ImagesForTraining> {
                 key: key,
                 child: TextFormField(
                   decoration: InputDecoration(
-                      labelText: 'Dataset Name',
-                      hintText: 'Dataset Name'),
-                  validator: (input){
-                     if(input.isEmpty || input == null){
-                       return 'String is empty';
-                     } else{
-                       return null;
-                     }
-                     }
-                  ,
-                  onSaved: (input)=> dataset_name= input ,
+                      labelText: 'Dataset Name', hintText: 'Dataset Name'),
+                  validator: (input) {
+                    if (input.isEmpty || input == null) {
+                      return 'String is empty';
+                    } else {
+                      return null;
+                    }
+                  },
+                  onSaved: (input) => dataset_name = input,
                 ),
               ),
-              SizedBox(height: 10.0,),
+              SizedBox(
+                height: 10.0,
+              ),
               GridView.count(
                 shrinkWrap: true,
                 crossAxisCount: 3,
@@ -435,7 +474,7 @@ class ImagesForTrainingState extends State<ImagesForTraining> {
     for (var i = 0; i < widget.imageList.length; i++) {
       Asset asset = widget.imageList[i];
       loadImagePaths(asset).then((result) {
-        print('Result'+result);
+        print('Result' + result);
         setState(() {
           paths.add(result);
         });
@@ -443,17 +482,12 @@ class ImagesForTrainingState extends State<ImagesForTraining> {
     }
   }
 
-void submit(){
-    if(key.currentState.validate()){
+  void submit() {
+    if (key.currentState.validate()) {
       key.currentState.save();
       print(dataset_name);
     }
+  }
 }
-
-
-}
-
 
 //---------------------------------------------------------------------------------------------------------------------------------s
-
-
