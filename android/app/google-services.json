@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "559035288526",
+    "firebase_url": "https://biometricsasservice.firebaseio.com",
+    "project_id": "biometricsasservice",
+    "storage_bucket": "biometricsasservice.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:559035288526:android:76ccff92d3ab4cb690799f",
+        "android_client_info": {
+          "package_name": "biometrics.co.rj.biometricsfinalproject2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "559035288526-8sqp8jfr1j3pk48bt0rqe7ujd40utlmv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAk8Yj6_MzXpLaeHtzJCgn0vlkbENZAYKE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "559035288526-8sqp8jfr1j3pk48bt0rqe7ujd40utlmv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "559035288526-b5n0530nl62lmv7mlv50o1v8dkgrprij.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "biometrics.co.rj.biometricsfinalproject2"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
