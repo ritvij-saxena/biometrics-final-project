@@ -22,7 +22,7 @@ import 'dart:math';
 import 'package:tflite/tflite.dart';
 import 'package:image/image.dart' as img;
 
-const PROJECT_ID = "biometricsasservice";
+const PROJECT_ID = "";
 const STORAGE_BUCKET = "gs://$PROJECT_ID.appspot.com";
 const AUTO_ML_BUCKET = "gs://$PROJECT_ID-vcm";
 const REALDB_BUCKET = "https://$PROJECT_ID.firebaseio.com/";
