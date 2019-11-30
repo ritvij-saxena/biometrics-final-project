@@ -1,9 +1,9 @@
 {
   "project_info": {
     "project_number": "559035288526",
-    "firebase_url": "https://biometricsasservice.firebaseio.com",
-    "project_id": "biometricsasservice",
-    "storage_bucket": "biometricsasservice.appspot.com"
+    "firebase_url": "https://project_id.firebaseio.com",
+    "project_id": "",
+    "storage_bucket": "<project_id>.appspot.com"
   },
   "client": [
     {
@@ -21,7 +21,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAk8Yj6_MzXpLaeHtzJCgn0vlkbENZAYKE"
+          "current_key": ""
         }
       ],
       "services": {
