@@ -31,6 +31,13 @@ dependencies:
   gallery_saver:
   multi_image_picker:
   get_it:
+  cloud_firestore:
+  firebase_storage:
+  csv:
+  firebase_database:
+  tflite:
+  image_picker:
+
 
 dev_dependencies:
   flutter_test:
@@ -49,7 +56,10 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
+  assets:
+    - assets/dict.txt
+    - assets/manifest.json
+    - assets/model.tflite
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
 
