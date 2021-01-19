@@ -2,15 +2,6 @@
 
 Biometrics Project
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+In this project, we aimed to provide biometric recognition services to devices which do not have such hardware. This app would be Launcher app, which would click the image of an user, perform face recognition and then give access if the percentage of match is more than a certain threshold. 
+For facial recognition we have a logistic regression model deployed on firebase (AUTO ML)
+The mobile app is made using Flutter to cater Android and iOS platform.
